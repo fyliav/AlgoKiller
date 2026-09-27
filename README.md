@@ -115,7 +115,9 @@ API_KEY=...
 | `HARNESS_TEMPERATURE` | `0`         | 采样温度（`.env.example` 给的是 `1`，按需调整） |
 | `HARNESS_MAX_TOKENS` | `99999`     | 单次响应输出 token 上限 |
 | `HARNESS_MAX_ITERATIONS` | `99999`     | Agent loop 最大迭代次数 |
-| `HARNESS_MODEL_RETRIES` | `5`         | 模型请求失败重试次数 |
+| `HARNESS_MODEL_RETRIES` | `5`         | 模型请求失败重试次数（重试间隔指数退避，上限 120s，优先采用服务端 `retry_after`） |
+| `HARNESS_STREAM` | `1`         | 使用流式响应并在本地重组；置 `0` 恢复非流式。流式可避免 Cloudflare 等反代的 120s 读超时（HTTP 524）掐断长请求 |
+| `HARNESS_REQUEST_TIMEOUT_SECONDS` | `9999`      | 单次请求的客户端读超时；只能约束本地等待时间，无法延长上游反代的超时 |
 | `HARNESS_SYSTEM_REINJECTION_INTERVAL` | `20`        | 每 N 轮重新注入系统提示词以对抗约束遗忘 |
 | `HARNESS_CONTEXT_COMPACTION_THRESHOLD_CHARS` | `500000`    | 活跃上下文超过此字符数触发 note 压缩 |
 | `HARNESS_ARTIFACTS_DIR` | `artifacts` | 还原代码与最终 markdown 的输出目录 |

@@ -1,0 +1,18 @@
+{
+  "source_line": 91031352,
+  "message_line": 91273665,
+  "source_address": "0xb4000075facfb520",
+  "message_address": "0xb4000075fad84a50",
+  "source_copy_length": "0x120d",
+  "message_length": "0x120c",
+  "field_number": 123,
+  "field_offset": "0x6a",
+  "field_length": "0xaab",
+  "rotate_input": "0x41bf475d5be9db41",
+  "rotate_right": "0x1a",
+  "phase_word": "0xfa76d0506fd1d756",
+  "phase": "56 d7 d1 6f 50 d0 76 fa",
+  "model": "output[i] = input[i] XOR phase[i & 7]",
+  "source_is_business_plaintext": false,
+  "upstream_standard_cipher_identified": false
+}

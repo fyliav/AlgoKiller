@@ -88,7 +88,6 @@ class TraceAgent:
                 tools=clean_jsonable(self.tools),
                 tool_choice="auto",
                 max_tokens=self.max_tokens,
-                timeout=9999,
                 **api_kwargs(api_key=self.api_key, api_base=self.api_base),
                 **temperature_kwargs(model=self.model, temperature=self.temperature),
                 **reasoning_effort_kwargs(model=self.model, reasoning_effort=self.reasoning_effort),
@@ -101,7 +100,7 @@ class TraceAgent:
             assistant_text = clean_text(message_text(message)).strip()
 
             tool_calls = getattr(message, "tool_calls", None)
-            if not tool_calls:
+            if not tool_calls and assistant_text != "":
                 if self._review_direct_assistant_text(assistant_text):
                     continue
                 self._notify_final_text(assistant_text)
@@ -110,14 +109,16 @@ class TraceAgent:
             if assistant_text != "":
                 print(assistant_text)
                 print()
-                print()
             elif reasoning_content:
                 print(reasoning_content)
                 print()
-                print()
 
-            self._execute_and_append_tool_calls(list(tool_calls))
+            if tool_calls:
+                self._execute_and_append_tool_calls(list(tool_calls))
+
             self._maybe_compact_context()
+            if not tool_calls and assistant_text == "" and reasoning_content != "":
+                self._append_message({"role": "user", "content": "继续"})
 
         return "Stopped: reached HARNESS_MAX_ITERATIONS before the model produced a final answer."
 
